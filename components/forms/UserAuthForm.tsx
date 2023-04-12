@@ -28,8 +28,6 @@ export function UserAuthForm({ ...props }: UserAuthFormProps) {
   async function onSubmit(data: FormData) {
     setIsLoading(true)
 
-    console.log('SIGN IN')
-
     const signInResult = await signIn('email', {
       email: data.email.toLowerCase(),
       redirect: false,

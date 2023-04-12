@@ -14,8 +14,6 @@ export default async function DashPage() {
     redirect(authOptions?.pages?.signIn || '/login')
   }
 
-  console.log(user)
-
   return (
     <div>
       <h1>Dashboard</h1>

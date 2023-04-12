@@ -4,6 +4,7 @@ import EmailProvider from 'next-auth/providers/email'
 import { ServerClient } from 'postmark'
 import { config } from './config'
 import { SessionStrategy, AuthOptions } from 'next-auth'
+import { handleNewSession } from './session'
 
 const postmarkClient = new ServerClient(process.env.POSTMARK_API_TOKEN || '')
 
@@ -19,6 +20,7 @@ export const authOptions: AuthOptions = {
     async jwt({ token, user }) {
       if (user) {
         token.id = user.id
+        await handleNewSession(user.id)
       }
 
       return token
