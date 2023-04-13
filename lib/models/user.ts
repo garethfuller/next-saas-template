@@ -1,9 +1,20 @@
 import { db } from '../db'
-import { User as PrismaUser } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { ApiKey } from './api-key'
 import { stripe } from '../services/stripe/client'
 
-type UserData = (PrismaUser & { apiKey: ApiKey | null }) | null
+type UserData = Prisma.UserGetPayload<{
+  select: {
+    id: true
+    email: true
+    apiKey: {
+      select: {
+        token: true
+      }
+    }
+    stripeCustomerId: true
+  }
+}> | null
 
 export class User {
   data?: UserData
@@ -15,8 +26,15 @@ export class User {
       where: {
         id: this.id,
       },
-      include: {
-        apiKey: true,
+      select: {
+        id: true,
+        email: true,
+        stripeCustomerId: true,
+        apiKey: {
+          select: {
+            token: true,
+          },
+        },
       },
     }))
   }

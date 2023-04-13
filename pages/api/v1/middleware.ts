@@ -1,3 +1,4 @@
+import { ApiKey } from '@/lib/models/api-key'
 import Cors from 'cors'
 import { NextApiRequest, NextApiResponse } from 'next'
 
@@ -7,15 +8,16 @@ const cors = Cors({
   methods: ['GET', 'HEAD'],
 })
 
-function authApiKey(
+async function authApiKey(
   req: NextApiRequest,
   res: NextApiResponse,
   next: (result: any) => void
 ) {
   const { authorization } = req.headers
-  const providedApiKey = authorization?.split(' ')[1]
+  const authToken = authorization?.split(' ')[1]
+  const validToken = await ApiKey.validToken(authToken || '')
 
-  if (providedApiKey !== 'xxx') {
+  if (!validToken) {
     return res.status(401).json({ message: 'Unauthorized' })
   }
 
