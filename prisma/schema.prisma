@@ -6,23 +6,36 @@ generator client {
 }
 
 datasource db {
-  provider = "sqlite"
+  provider = "postgresql"
   url      = env("DATABASE_URL")
 }
 
 model User {
-  id                     String    @id @default(uuid())
-  name                   String?
-  email                  String?   @unique
-  emailVerified          DateTime?
-  createdAt              DateTime  @default(now()) @map(name: "created_at")
-  updatedAt              DateTime  @default(now()) @map(name: "updated_at")
-  stripeCustomerId       String?   @unique @map(name: "stripe_customer_id")
-  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
-  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
-  apiKey                 ApiKey?
+  id            String    @id @default(uuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  apiKey        ApiKey?
+  billing       Billing?
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
 
   @@map(name: "users")
+}
+
+model Billing {
+  id                     String    @id @default(uuid())
+  user                   User      @relation(fields: [userId], references: [id])
+  userId                 String    @unique
+  stripeCustomerId       String    @unique @map(name: "stripe_customer_id")
+  stripeSubscriptionId   String?   @unique @map(name: "stripe_subscription_id")
+  stripeCurrentPeriodEnd DateTime? @map(name: "stripe_current_period_end")
+
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+
+  @@map(name: "billing")
 }
 
 model VerificationToken {

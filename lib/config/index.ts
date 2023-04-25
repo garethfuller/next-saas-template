@@ -7,7 +7,7 @@ type Config = {
 
 export const config: Config = {
   appName: 'My SaaS App',
-  appUrl: 'https://mysaasapp.com',
+  appUrl: process.env.NEXT_PUBLIC_APP_URL || 'https://myapp.com',
   companyName: 'SaaS App LTD',
   companyAddress: '123 SaaS St, SaaS City, SaaS State, SaaS Country',
 }

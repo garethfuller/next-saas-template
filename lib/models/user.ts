@@ -12,7 +12,11 @@ type UserData = Prisma.UserGetPayload<{
         token: true
       }
     }
-    stripeCustomerId: true
+    billing: {
+      select: {
+        stripeCustomerId: true
+      }
+    }
   }
 }> | null
 
@@ -29,7 +33,11 @@ export class User {
       select: {
         id: true,
         email: true,
-        stripeCustomerId: true,
+        billing: {
+          select: {
+            stripeCustomerId: true,
+          },
+        },
         apiKey: {
           select: {
             token: true,
@@ -71,6 +79,8 @@ export class User {
         expand: ['data.subscriptions'],
       })
 
+      if (!customer) return
+
       const subscription = customer.subscriptions?.data[0]
 
       if (!subscription) return
@@ -80,11 +90,20 @@ export class User {
           id: this.id,
         },
         data: {
-          stripeCustomerId: subscription.customer as string,
-          stripeSubscriptionId: subscription.id,
-          stripeCurrentPeriodEnd: new Date(
-            subscription.current_period_end * 1000
-          ),
+          billing: {
+            connectOrCreate: {
+              where: {
+                stripeCustomerId: customer.id,
+              },
+              create: {
+                stripeCustomerId: subscription.customer as string,
+                stripeSubscriptionId: subscription.id,
+                stripeCurrentPeriodEnd: new Date(
+                  subscription.current_period_end * 1000
+                ),
+              },
+            },
+          },
         },
       })
     } catch (error) {

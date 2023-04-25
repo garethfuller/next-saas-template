@@ -24,7 +24,7 @@ export default async function DashPage() {
         </div>
       ) : null}
 
-      {user.stripeCustomerId ? (
+      {user.billing?.stripeCustomerId ? (
         <form method="POST" action="/api/billing">
           <button type="submit">Manage billing</button>
         </form>
