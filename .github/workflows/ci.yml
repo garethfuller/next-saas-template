@@ -1,0 +1,30 @@
+name: CI
+
+on:
+  - pull_request
+
+env:
+  NEXT_PUBLIC_APP_URL: http://localhost:3000
+  NEXTAUTH_URL: http://localhost:3000
+  NEXTAUTH_SECRET: somesecret
+  DATABASE_URL: postgres://postgres:postgres@localhost:5432/test
+  REDIS_HOST: localhost
+  REDIS_PORT: 6379
+
+jobs:        
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:                        
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - name: Run unit tests
+        run: pnpm run test:unit
+  integration-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: ./.github/actions/build
+      - uses: ./.github/actions/docker-compose
+      - name: Run tests
+        run: pnpm run test:int
+
