@@ -30,7 +30,7 @@ describe('handleNewSession', () => {
     let stripeUser: User
     beforeEach(async () => {
       stripeUser = await db.user.create({
-        data: { email: 'gareth.a.f@gmail.com' },
+        data: { email: 'joe@bloggs.com' },
       })
       await handleNewSession(stripeUser.id)
     })
