@@ -9,6 +9,22 @@ Initial implementation drawn from
 
 ## Development
 
+```bash
+git clone https://github.com/garethfuller/japoolzi.git && cd japoolzi && pnpm install
+```
+
+Then start dev services, e.g. postgres & redis
+
+```bash
+pnpm dev:services
+```
+
+Then setup the database:
+
+```bash
+pnpm db:setup
+```
+
 Run the development server:
 
 ```bash

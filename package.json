@@ -9,6 +9,7 @@
     "lint": "next lint",
     "db:seed": "ts-node --compiler-options '{\"module\":\"CommonJS\"}' prisma/seed.ts",
     "db:migrate:dev": "prisma migrate dev",
+    "db:setup": "pnpm db:migrate:dev && pnpm db:seed",
     "db:ui": "prisma studio",
     "test:unit": "vitest --config ./tests/vitest.config.unit.ts",
     "test:unit:ui": "vitest --config ./tests/vitest.config.unit.ts --ui",

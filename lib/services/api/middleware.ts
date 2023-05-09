@@ -1,4 +1,3 @@
-import { ApiKey } from '@/lib/models/api-key'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function apiMiddleware(req: NextRequest) {
@@ -24,6 +23,7 @@ export async function apiMiddleware(req: NextRequest) {
 }
 
 async function authorized(req: NextRequest): Promise<boolean> {
+  const { ApiKey } = await import('@/lib/models/api-key')
   const authorization = req.headers.get('authorization') as string
   const authToken = authorization?.split(' ')[1]
   return ApiKey.validToken(authToken || '')
