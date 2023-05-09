@@ -1,7 +1,7 @@
 import { Job, Queue, Worker } from 'bullmq'
 import { connection } from './config'
 
-export function buildWokrer<T>(
+export function buildWorker<T>(
   queueName: string,
   processor: (data: T) => Promise<void>
 ) {

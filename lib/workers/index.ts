@@ -2,6 +2,7 @@ import { worker as apiRequestWorker } from './api-request.worker'
 
 try {
   apiRequestWorker.run()
+  console.log('Workers started...')
 } catch (error) {
   console.log('Error starting workers:', error)
   apiRequestWorker.close()
